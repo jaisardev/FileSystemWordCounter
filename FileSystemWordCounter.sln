@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemWordCounter.API.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemWordCounter.API.Business", "FileSystemWordCounter.API.Business\FileSystemWordCounter.API.Business.csproj", "{00698F50-6478-4075-9F63-4016C6ACB2B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemWordCounter.API.Business.Test", "FileSystemWordCounter.API.Business.Test\FileSystemWordCounter.API.Business.Test.csproj", "{2605FE1E-0432-4346-B0A6-A3A31D321304}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{00698F50-6478-4075-9F63-4016C6ACB2B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00698F50-6478-4075-9F63-4016C6ACB2B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00698F50-6478-4075-9F63-4016C6ACB2B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2605FE1E-0432-4346-B0A6-A3A31D321304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2605FE1E-0432-4346-B0A6-A3A31D321304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2605FE1E-0432-4346-B0A6-A3A31D321304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2605FE1E-0432-4346-B0A6-A3A31D321304}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
