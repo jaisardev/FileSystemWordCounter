@@ -17,6 +17,12 @@ namespace FileSystemWordCounter.API.Business
     #endregion
 
     #region "Constructor"
+
+    public WordCounter()
+    {
+      UnityEventLogger.Log.CreateUnityMessage("WordCounter");
+    }
+
     public WordCounter(IUnitOfWork unitOfWork)
     {
       _unitOfWork = unitOfWork;
@@ -30,7 +36,7 @@ namespace FileSystemWordCounter.API.Business
     //{
     //  return _unitOfWork.HelloFromUnitOfWorkExample();
     //}
-    public CounterResultDTO GetCounterResults(string searchTerm)
+    public virtual CounterResultDTO GetCounterResults(string searchTerm)
     {
       _searchTerm = searchTerm;
       string coincidencesByFile = string.Empty;
