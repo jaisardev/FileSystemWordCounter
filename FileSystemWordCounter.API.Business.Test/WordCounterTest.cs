@@ -122,7 +122,7 @@ namespace FileSystemWordCounter.API.Business.Test
     {
       var testwordCounter = _wordCounter.GetCounterResults("");
 
-      // Obejct
+      // Object
       Assert.IsInstanceOf<CounterResultDTO>(testwordCounter);
       Assert.IsNotNull(testwordCounter);
 

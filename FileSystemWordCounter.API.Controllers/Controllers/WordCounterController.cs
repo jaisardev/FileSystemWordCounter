@@ -24,11 +24,19 @@ namespace FileSystemWordCounter.API.Controllers
 
     // GET api/wordCounter/test 
     [HttpGet("Search/{id}")]
-    public HttpResponseMessage Get(string id)
+    public virtual HttpResponseMessage Get(string id)
     {
+      if (string.IsNullOrWhiteSpace(id))
+      {
+        return Request.CreateResponse(HttpStatusCode.BadRequest);
+      }
+      
       CounterResultDTO counterResult = new CounterResultDTO();
       counterResult = _wordCounter.GetCounterResults(id);
-
+      if (counterResult == null || counterResult.TotalCoincidencesFound == 0)
+      {
+        return Request.CreateResponse(HttpStatusCode.NotFound);
+      }
       return Request.CreateResponse(HttpStatusCode.OK, counterResult);
     }
 
