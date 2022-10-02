@@ -1,4 +1,4 @@
-﻿using Owin; 
+﻿using Owin;
 using System.Web.Http;
 using Microsoft.Owin.Hosting;
 using System;
@@ -9,31 +9,23 @@ namespace FileSystemWordCounter.API.Controllers
 {
   public class Startup
   {
+    private static readonly IUnityContainer _container = UnityHelpers.GetConfiguredContainer();
 
     public static void StartServer()
     {
       string baseAddress = "http://localhost:8081/";
-
-      // Start OWIN host 
-      using (WebApp.Start<Startup>(url: baseAddress))
-      {
-        // Create HttpClient and make a request to api/values 
-        HttpClient client = new HttpClient();
-
-        var response = client.GetAsync(baseAddress + "api/values").Result;
-
-        Console.WriteLine("Started...");
-        Console.WriteLine(response);
-        Console.WriteLine(response.Content.ReadAsStringAsync().Result);
-        Console.ReadLine();
-      }
+      var startup = _container.Resolve<Startup>();
+      IDisposable webApplication = WebApp.Start(baseAddress, startup.Configuration);
 
       try
       {
+        Console.WriteLine("Started...");
+
         Console.ReadKey();
       }
       finally
       {
+        webApplication.Dispose();
       }
 
 
@@ -43,6 +35,7 @@ namespace FileSystemWordCounter.API.Controllers
     {
       // Configure Web API for self-host. 
       HttpConfiguration config = new HttpConfiguration();
+      config.DependencyResolver = new UnityDependencyResolver(UnityHelpers.GetConfiguredContainer());
 
       config.Routes.MapHttpRoute(
           name: "DefaultApi",
