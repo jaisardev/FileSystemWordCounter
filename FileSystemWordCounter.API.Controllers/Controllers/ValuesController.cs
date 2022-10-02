@@ -1,19 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
+using FileSystemWordCounter.API.Business;
+using FileSystemWordCounter.API.Business.Model;
 
 namespace FileSystemWordCounter.API.Controllers
 {
   public class ValuesController : ApiController
   {
-    public ValuesController()
+    private readonly IWordCounter _wordCounter;
+    public ValuesController(IWordCounter wordCounter)
     {
-
+      _wordCounter = wordCounter;
     }
 
     // GET api/values 
     public IEnumerable<string> Get()
     {
-      return new string[] { "value1", "value2"};
+      CounterResultDTO counterResult = new CounterResultDTO();
+      counterResult = _wordCounter.GetCounterResults();
+
+      return new string[] { counterResult.TotalFilesFound.ToString(), counterResult.TotalCoincidencesFound.ToString(), counterResult.CoincidencesByFile };
     }
 
     // GET api/values/5 
