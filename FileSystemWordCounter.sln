@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemWordCounter.API.Controllers", "FileSystemWordCounter.API.Controllers\FileSystemWordCounter.API.Controllers.csproj", "{92D0C667-7E54-4EDE-A369-7E3FF5C65F96}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystemWordCounter.API.Console", "FileSystemWordCounter.API.Console\FileSystemWordCounter.API.Console.csproj", "{39CFF499-85D1-4847-B9C3-DF6547E1578B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92D0C667-7E54-4EDE-A369-7E3FF5C65F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92D0C667-7E54-4EDE-A369-7E3FF5C65F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92D0C667-7E54-4EDE-A369-7E3FF5C65F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92D0C667-7E54-4EDE-A369-7E3FF5C65F96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39CFF499-85D1-4847-B9C3-DF6547E1578B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39CFF499-85D1-4847-B9C3-DF6547E1578B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39CFF499-85D1-4847-B9C3-DF6547E1578B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39CFF499-85D1-4847-B9C3-DF6547E1578B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B5292EF-400A-4ADA-9755-0EAA6B4BB0C8}
+	EndGlobalSection
+EndGlobal
