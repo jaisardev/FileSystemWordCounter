@@ -10,6 +10,6 @@ namespace FileSystemWordCounter.API.Business
 {
   public interface IWordCounter : IDisposable
   {
-    CounterResultDTO GetCounterResults();
+    CounterResultDTO GetCounterResults(string searchTerm);
   }
 }
