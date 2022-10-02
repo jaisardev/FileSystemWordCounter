@@ -10,6 +10,6 @@ namespace FileSystemWordCounter.API.Business.Model
   {
     public int TotalFilesFound;
     public int TotalCoincidencesFound;
-    public string CoincidencesByFile;
+    public List<string> CoincidencesByFile = new List<string>();
   }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using FileSystemWordCounter.API.Business.Logging;
 using FileSystemWordCounter.API.Business.Attributes;
 using FileSystemWordCounter.API.Business.Model;
@@ -11,24 +10,29 @@ namespace FileSystemWordCounter.API.Business
   [UnityIoCTransientLifetimeAttribute]
   public class WordCounter : IWordCounter
   {
-    private IUnitOfWork _unitOfWorkExample;
-    private string _searchTerm = "error";
+    #region "Private variables"
+    private IUnitOfWork _unitOfWork;
+    private string _searchTerm = string.Empty;
     private bool _disposed = false;
-    private CounterResultDTO _counterResult;
+    #endregion
 
-    public WordCounter(IUnitOfWork unitOfWorkExample)
+    #region "Constructor"
+    public WordCounter(IUnitOfWork unitOfWork)
     {
-      _unitOfWorkExample = unitOfWorkExample;
-      UnityEventLogger.Log.CreateUnityMessage("BusinessClass");
+      _unitOfWork = unitOfWork;
+      UnityEventLogger.Log.CreateUnityMessage("WordCounter");
     }
+    #endregion
+
+    #region "Public methods"
 
     //public string Hello()
     //{
-    //  return _unitOfWorkExample.HelloFromUnitOfWorkExample();
+    //  return _unitOfWork.HelloFromUnitOfWorkExample();
     //}
-
-    public CounterResultDTO GetCounterResults()
+    public CounterResultDTO GetCounterResults(string searchTerm)
     {
+      _searchTerm = searchTerm;
       string coincidencesByFile = string.Empty;
       CounterResultDTO resultDTO = new CounterResultDTO();
 
@@ -58,13 +62,12 @@ namespace FileSystemWordCounter.API.Business
       foreach (string filename in queryMatchingFiles)
       {
         fileCoincidences = GetCoincidences(filename);
-        coincidencesByFile += "\r\n" + filename + " (" + fileCoincidences.ToString() + ")";
-        resultDTO.CoincidencesByFile = filename + " (" + fileCoincidences.ToString() + ")";
+        coincidencesByFile += filename + " (" + fileCoincidences.ToString() + ")";
+        resultDTO.CoincidencesByFile.Add(filename + " (" + fileCoincidences.ToString() + ")");
         totalFilesCoincidences = totalFilesCoincidences + fileCoincidences;
       }
 
       resultDTO.TotalFilesFound = queryMatchingFiles.ToList().Count();
-      resultDTO.CoincidencesByFile = coincidencesByFile;
       resultDTO.TotalCoincidencesFound = totalFilesCoincidences;
 
       return resultDTO;
@@ -72,7 +75,7 @@ namespace FileSystemWordCounter.API.Business
 
     public void Dispose()
     {
-      _unitOfWorkExample.Dispose();
+      _unitOfWork.Dispose();
       UnityEventLogger.Log.DisposeUnityMessage("BusinessClass");
       if (!_disposed)
       {
@@ -80,6 +83,9 @@ namespace FileSystemWordCounter.API.Business
       }
     }
 
+    #endregion
+
+    #region "Private methods"
     // Read the contents of the file.  
     private string GetFileText(string name)
     {
@@ -122,7 +128,8 @@ namespace FileSystemWordCounter.API.Business
       //Console.ReadKey();
 
       return wordCount;
-
     }
+
+    #endregion
   }
 }
