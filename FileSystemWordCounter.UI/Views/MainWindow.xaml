@@ -1,0 +1,21 @@
+﻿<Window x:Class="FileSystemWordCounter.UI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FileSystemWordCounter.UI.Views"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="400" Width="611.2">
+  <Grid Margin="0,29,13.8,0" VerticalAlignment="Top" >
+    <Label Content="Total files found:" Margin="90,31,393,119" RenderTransformOrigin="-13.667,-1.349"/>
+    <TextBox x:Name ="txtTotalFilesFound" TextWrapping="Wrap" Text="" Margin="202,31,292,131" RenderTransformOrigin="1.084,-2.25"/>
+    <Label Margin="112,0,393,158" Content="Input a text:" RenderTransformOrigin="0.798,0.585"/>
+    <TextBox x:Name="txtSearch" Margin="202,0,207,158"/>
+    <Button Click="Search_Click" Margin="388,0,134,158" RenderTransformOrigin="1.896,0.658" Content="Search"/>
+    <Label Content="Total number of coincidences:" Margin="19,58,393,92" RenderTransformOrigin="-13.667,-1.349"/>
+    <TextBox x:Name ="txtTotalCoincidences" TextWrapping="Wrap" Text="" Margin="202,58,291,104" RenderTransformOrigin="1.084,-2.25"/>
+    <TextBox Name ="txtCoincidencesByFile" HorizontalAlignment="Left" Height="89" Margin="202,85,0,0" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Text="" VerticalAlignment="Top" Width="255"/>
+    <Label Content="Coincidences by file:" Margin="70,85,393,65" RenderTransformOrigin="-13.667,-1.349"/>
+  </Grid>
+
+</Window>
