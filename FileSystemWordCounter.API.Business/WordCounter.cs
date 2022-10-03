@@ -32,18 +32,13 @@ namespace FileSystemWordCounter.API.Business
 
     #region "Public methods"
 
-    //public string Hello()
-    //{
-    //  return _unitOfWork.HelloFromUnitOfWorkExample();
-    //}
     public virtual CounterResultDTO GetCounterResults(string searchTerm)
     {
       _searchTerm = searchTerm;
-      string coincidencesByFile = string.Empty;
       CounterResultDTO resultDTO = new CounterResultDTO();
 
       // Modify this path as necessary.  
-      string startFolder = @"c:\temp";
+      string startFolder = @"C:\Temp";
 
       // Take a snapshot of the file system.  
       System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(startFolder);
@@ -68,7 +63,6 @@ namespace FileSystemWordCounter.API.Business
       foreach (string filename in queryMatchingFiles)
       {
         fileCoincidences = GetCoincidences(filename);
-        coincidencesByFile += filename + " (" + fileCoincidences.ToString() + ")";
         resultDTO.CoincidencesByFile.Add(filename + " (" + fileCoincidences.ToString() + ")");
         totalFilesCoincidences = totalFilesCoincidences + fileCoincidences;
       }
