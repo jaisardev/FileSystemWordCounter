@@ -77,10 +77,10 @@ namespace FileSystemWordCounter.API.Business.Test
       counterResultDTO.TotalFilesFound = 2;
       counterResultDTO.TotalCoincidencesFound = 3;
 
-      // GetCounterResults could have any string and specific or empty results
-      mockWordCounter.Setup(a => a.GetCounterResults(null)).Returns(new CounterResultDTO());
-      mockWordCounter.Setup(a => a.GetCounterResults(It.Is<string>(x => x == ""))).Returns(new CounterResultDTO());
-      mockWordCounter.Setup(a => a.GetCounterResults(It.Is<string>(x => x == "test"))).Returns(counterResultDTO);
+      // GetCounterResults could have any seacrh string and specific or empty results
+      mockWordCounter.Setup(a => a.GetCounterResults(@"c:\temp", null)).Returns(new CounterResultDTO());
+      mockWordCounter.Setup(a => a.GetCounterResults(@"c:\temp", It.Is<string>(x => x == ""))).Returns(new CounterResultDTO());
+      mockWordCounter.Setup(a => a.GetCounterResults(@"c:\temp", It.Is<string>(x => x == "test"))).Returns(counterResultDTO);
 
 
       // Return mock implementation object
@@ -97,7 +97,7 @@ namespace FileSystemWordCounter.API.Business.Test
     [Test]
     public void GetCounterResultsByRightSearchParameter()
     {
-      var testwordCounter = _wordCounter.GetCounterResults("test");
+      var testwordCounter = _wordCounter.GetCounterResults(@"c:\temp", "test");
 
       // Obejct
       Assert.IsInstanceOf<CounterResultDTO>(testwordCounter);
@@ -120,7 +120,7 @@ namespace FileSystemWordCounter.API.Business.Test
     [Test]
     public void GetCounterResultsByEmptySearchParameter()
     {
-      var testwordCounter = _wordCounter.GetCounterResults("");
+      var testwordCounter = _wordCounter.GetCounterResults(@"c:\temp", "");
 
       // Object
       Assert.IsInstanceOf<CounterResultDTO>(testwordCounter);
@@ -142,7 +142,7 @@ namespace FileSystemWordCounter.API.Business.Test
     [Test]
     public void GetCounterResultsByNullSearchParameter()
     {
-      var testwordCounter = _wordCounter.GetCounterResults(null);
+      var testwordCounter = _wordCounter.GetCounterResults(@"c:\temp", null);
 
       // Object
       Assert.IsInstanceOf<CounterResultDTO>(testwordCounter);

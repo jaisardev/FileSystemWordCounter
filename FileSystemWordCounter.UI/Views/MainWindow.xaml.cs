@@ -14,6 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Forms;
+using System.Web;
 
 namespace FileSystemWordCounter.UI.Views
 {
@@ -27,15 +29,14 @@ namespace FileSystemWordCounter.UI.Views
       InitializeComponent();
     }
 
-    private void Search_Click(object sender, RoutedEventArgs e)
+    private void Browser_Click(object sender, RoutedEventArgs e)
     {
-      //WordCounterService wordCounterService = new WordCounterService();
-
-      var results = WordCounterService.GetResults(this.txtSearch.Text);
-
-      txtTotalFilesFound.Text = results.Result.TotalFilesFound.ToString();
-      txtTotalCoincidences.Text = results.Result.TotalCoincidencesFound.ToString();
-      txtCoincidencesByFile.Text = String.Join(Environment.NewLine, results.Result.CoincidencesByFile);
+      using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+      {
+        DialogResult result = dialog.ShowDialog();
+        txtBrowser.Text = dialog.SelectedPath;
+        txtBrowser.Focus();
+      }
     }
   }
 }

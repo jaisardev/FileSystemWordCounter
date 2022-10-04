@@ -32,13 +32,13 @@ namespace FileSystemWordCounter.UI.Models.Services
     //  return result;
     //}
 
-    public static async Task<WordCounterResult> GetResults(String textToSearch)
+    public static async Task<WordCounterResult> GetResults(String folderToSearch, String textToSearch)
     {
       try
       {
         WordCounterResult result = new WordCounterResult();
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-        string apiUrl = $"{BASE_URL}/Get/" + textToSearch;
+        string apiUrl = $"{BASE_URL}/Get/" + folderToSearch + "/" + textToSearch;
         using (HttpClient client = new HttpClient())
         {
           client.BaseAddress = new Uri(apiUrl);

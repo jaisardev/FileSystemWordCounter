@@ -39,7 +39,7 @@ namespace FileSystemWordCounter.API.Controllers
 
       config.Routes.MapHttpRoute(
           name: "DefaultApi",
-          routeTemplate: "api/{controller}/{action=Index}/{id}", 
+          routeTemplate: "api/{controller}/{action=Index}/{folder}/{text}", 
       defaults: new { id = RouteParameter.Optional }
       );
       config.MapHttpAttributeRoutes();

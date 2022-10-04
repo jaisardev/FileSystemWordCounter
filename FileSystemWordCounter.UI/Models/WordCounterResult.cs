@@ -18,11 +18,41 @@ namespace FileSystemWordCounter.UI.Models
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public int _totalFilesFound;
-    public int _totalCoincidencesFound;
-    public List<string> _coincidencesByFile = new List<string>();
+    private string _totalFilesFound;
+    private string _totalCoincidencesFound;
+    private List<string> _coincidencesByFile = new List<string>();
+    private string _coincidencesByFileString;
+    private string _folder;
+    private string _text;
 
-    public int TotalFilesFound 
+    public string Folder
+    {
+      get
+      {
+        return _folder;
+      }
+      set
+      {
+        _folder = value;
+        OnPropertyChanged("Folder");
+      }
+    }
+
+    public string Text
+    {
+      get
+      {
+        return _text;
+      }
+      set
+      {
+        _text = value;
+        OnPropertyChanged("Text");
+      }
+    }
+
+
+    public string TotalFilesFound 
     { 
       get 
         { 
@@ -35,7 +65,7 @@ namespace FileSystemWordCounter.UI.Models
         } 
     }
 
-    public int TotalCoincidencesFound
+    public string TotalCoincidencesFound
     {
       get
       {
@@ -52,12 +82,25 @@ namespace FileSystemWordCounter.UI.Models
     {
       get
       {
-        return _coincidencesByFile;
+        return  _coincidencesByFile;
       }
       set
       {
         _coincidencesByFile = value;
         OnPropertyChanged("CoincidencesByFile");
+      }
+    }
+
+    public string CoincidencesByFileString
+    {
+      get
+      {
+        return _coincidencesByFileString;
+      }
+      set
+      {
+        _coincidencesByFileString = value;
+        OnPropertyChanged("CoincidencesByFileString");
       }
     }
 
