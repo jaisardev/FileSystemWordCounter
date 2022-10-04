@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Web;
 using System.Web.Http;
 using FileSystemWordCounter.API.Business;
 using FileSystemWordCounter.API.Business.Model;
@@ -23,16 +25,17 @@ namespace FileSystemWordCounter.API.Controllers
     }
 
     // GET api/wordCounter/test 
-    [HttpGet("Search/{id}")]
-    public virtual HttpResponseMessage Get(string id)
+    [HttpGet("Search/{text}")]
+    public virtual HttpResponseMessage Get(string folder, string text)
     {
-      if (string.IsNullOrWhiteSpace(id))
+      folder = Decode(folder);
+      if (string.IsNullOrWhiteSpace(text))
       {
         return Request.CreateResponse(HttpStatusCode.BadRequest);
       }
       
       CounterResultDTO counterResult = new CounterResultDTO();
-      counterResult = _wordCounter.GetCounterResults(id);
+      counterResult = _wordCounter.GetCounterResults(folder, text);
       if (counterResult == null || counterResult.TotalCoincidencesFound == 0)
       {
         return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -56,6 +59,13 @@ namespace FileSystemWordCounter.API.Controllers
     public HttpResponseMessage Delete(int id)
     {
       return Request.CreateResponse(HttpStatusCode.NotFound);
+    }
+    private static string Decode(string content)
+    {
+      var decodedBytes = HttpServerUtility.UrlTokenDecode(content);
+      string externalId = UTF8Encoding.UTF8.GetString(decodedBytes);
+
+      return externalId;
     }
   }
 }

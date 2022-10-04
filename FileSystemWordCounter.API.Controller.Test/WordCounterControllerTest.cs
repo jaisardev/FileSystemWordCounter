@@ -59,7 +59,7 @@ namespace FileSystemWordCounter.API.Business.Test
 
       var mockWordCounterController = new Mock<WordCounterController>(MockBehavior.Default);
       HttpRequestMessage request = new HttpRequestMessage();
-      mockWordCounterController.Setup(c => c.Get(It.Is<string>(x => x == "NotFound"))).Returns(request.CreateResponse(HttpStatusCode.NotFound));
+      mockWordCounterController.Setup(c => c.Get(It.IsAny<string>(), It.Is<string>(x => x == "NotFound"))).Returns(request.CreateResponse(HttpStatusCode.NotFound));
 
     }
 
@@ -90,9 +90,9 @@ namespace FileSystemWordCounter.API.Business.Test
       counterResultDTO.TotalCoincidencesFound = 3;
 
       // GetCounterResults could have any string and specific or empty results
-      mockWordCounter.Setup(a => a.GetCounterResults(null)).Returns(new CounterResultDTO());
-      mockWordCounter.Setup(a => a.GetCounterResults(It.Is<string>(x => x == ""))).Returns(new CounterResultDTO());
-      mockWordCounter.Setup(a => a.GetCounterResults(It.Is<string>(x => x == "test"))).Returns(counterResultDTO);
+      mockWordCounter.Setup(a => a.GetCounterResults(It.IsAny<string>(), null)).Returns(new CounterResultDTO());
+      mockWordCounter.Setup(a => a.GetCounterResults(It.IsAny<string>(), It.Is<string>(x => x == ""))).Returns(new CounterResultDTO());
+      mockWordCounter.Setup(a => a.GetCounterResults(It.IsAny<string>(), It.Is<string>(x => x == "test"))).Returns(counterResultDTO);
 
       // Return mock implementation object
       return mockWordCounter;
@@ -119,7 +119,7 @@ namespace FileSystemWordCounter.API.Business.Test
 
       wordCounterController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-      _response = wordCounterController.Get("test");
+      _response = wordCounterController.Get(@"c:\temp", "test");
 
       var responseResult = JsonConvert.DeserializeObject<CounterResultDTO>(_response.Content.ReadAsStringAsync().Result);
       Assert.AreEqual(_response.StatusCode, HttpStatusCode.OK);
@@ -156,7 +156,7 @@ namespace FileSystemWordCounter.API.Business.Test
 
       wordCounterController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-      _response = wordCounterController.Get("");
+      _response = wordCounterController.Get(@"c:\temp", "");
 
       Assert.AreEqual(_response.StatusCode, HttpStatusCode.BadRequest);
     }
@@ -178,7 +178,7 @@ namespace FileSystemWordCounter.API.Business.Test
 
       wordCounterController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-      _response = wordCounterController.Get(null);
+      _response = wordCounterController.Get(@"c:\temp", null);
 
       Assert.AreEqual(_response.StatusCode, HttpStatusCode.BadRequest);
     }
@@ -200,7 +200,7 @@ namespace FileSystemWordCounter.API.Business.Test
 
       wordCounterController.Request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
 
-      _response = wordCounterController.Get("NotFound");
+      _response = wordCounterController.Get(@"c:\temp", "NotFound");
 
       Assert.AreEqual(_response.StatusCode, HttpStatusCode.NotFound);
     }

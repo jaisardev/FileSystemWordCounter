@@ -1,17 +1,46 @@
-﻿using FileSystemWordCounter.UI.Models;
+﻿using FileSystemWordCounter.UI.Command;
+using FileSystemWordCounter.UI.Models;
 using FileSystemWordCounter.UI.Models.Services;
+using System.Windows.Input;
+using System;
+using System.Text;
+using System.Web;
+using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace FileSystemWordCounter.UI.ViewModels
 {
-  public class WordCounterViewModel
+  public class WordCounterViewModel : INotifyPropertyChanged
   {
+    #region PropertyChangeEvent
+    public event PropertyChangedEventHandler PropertyChanged;
+    private void OnPropertyChange(string propertyName)
+    {
+      if (PropertyChanged != null)
+      {
+        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      }
+    }
+
+    #endregion
     private WordCounterResult _wordCounterResult;
-    //private WordCounterService _wordCounterService;
+    private ICommand _ButtonSearch;
+    public ICommand ButtonSearch
+    {
+      get
+      {
+        return _ButtonSearch;
+      }
+      set
+      {
+        _ButtonSearch = value;
+      }
+    }
 
     public WordCounterViewModel()
     {
-      //_wordCounterService = new WordCounterService();
-      _wordCounterResult = new WordCounterResult { CoincidencesByFile = new System.Collections.Generic.List<string>() { "1.txt (2)", "2.txt(1)" }, TotalFilesFound = 3, TotalCoincidencesFound = 2 };
+      _wordCounterResult = new WordCounterResult();
+      ButtonSearch = new RelayCommand(new Action<object>(GetResults));
     }
 
     public WordCounterResult WordCounterResult
@@ -20,17 +49,46 @@ namespace FileSystemWordCounter.UI.ViewModels
       set { _wordCounterResult = value; }
     }
 
-    private void GetResults()
+    public string TotalFilesFound
     {
-      //var wordCounterService = new WordCounterService();
-      //var results = wordCounterService.GetResults();
+      get { return _wordCounterResult.TotalFilesFound; }
+      set { _wordCounterResult.TotalFilesFound = value; OnPropertyChange("TotalFilesFound"); }
+    }
 
-      //if (results.Result.StatusCode == System.Net.HttpStatusCode.OK)
-      //{
-      //  WordCounterResult = results.Result;
-      //}
+    public string TotalCoincidencesFound
+    {
+      get { return _wordCounterResult.TotalCoincidencesFound; }
+      set { _wordCounterResult.TotalCoincidencesFound = value; OnPropertyChange("TotalCoincidencesFound"); }
+    }
+    public List<String> CoincidencesByFile
+    {
+      get { return _wordCounterResult.CoincidencesByFile; }
+      set { _wordCounterResult.CoincidencesByFile = _wordCounterResult.CoincidencesByFile; OnPropertyChange("CoincidencesByFile"); }
+    }
 
-      //WordCounterService.GetResults(employeeModel);
+    public void GetResults(object obj)
+    {
+      var results = WordCounterService.GetResults(Encode(_wordCounterResult.Folder), _wordCounterResult.Text);
+
+      if (results.Result != null)
+      {
+        WordCounterResult.TotalFilesFound = results.Result.TotalFilesFound.ToString();
+        WordCounterResult.TotalCoincidencesFound = results.Result.TotalCoincidencesFound.ToString();
+        WordCounterResult.CoincidencesByFileString = String.Join(Environment.NewLine, results.Result.CoincidencesByFile);
+      }
+      else
+      {
+        WordCounterResult.TotalFilesFound = "0";
+        WordCounterResult.TotalCoincidencesFound = "0";
+        WordCounterResult.CoincidencesByFileString = "Not Found";
+      }
+    }
+    private static string Encode(string content)
+    {
+      byte[] encodedBytes = UTF8Encoding.UTF8.GetBytes(content);
+      string externalIdEncoded = HttpServerUtility.UrlTokenEncode(encodedBytes);
+
+      return externalIdEncoded;
     }
   }
 }

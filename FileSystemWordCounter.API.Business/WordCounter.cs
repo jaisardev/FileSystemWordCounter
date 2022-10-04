@@ -32,44 +32,55 @@ namespace FileSystemWordCounter.API.Business
 
     #region "Public methods"
 
-    public virtual CounterResultDTO GetCounterResults(string searchTerm)
+    public virtual CounterResultDTO GetCounterResults(string folder, string searchTerm)
     {
       _searchTerm = searchTerm;
       CounterResultDTO resultDTO = new CounterResultDTO();
 
       // Modify this path as necessary.  
-      string startFolder = @"C:\Temp";
+      string startFolder = folder;
 
       // Take a snapshot of the file system.  
       System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(startFolder);
 
-      // This method assumes that the application has discovery permissions  
-      // for all folders under the specified path.  
-      IEnumerable<System.IO.FileInfo> fileList = dir.GetFiles("*.*", System.IO.SearchOption.AllDirectories);
 
-      // Search the contents of each file.  
-      // A regular expression created with the RegEx class  
-      // could be used instead of the Contains method.  
-      // queryMatchingFiles is an IEnumerable<string>.  
-      var queryMatchingFiles =
-          from file in fileList
-          where file.Extension == ".txt"
-          let fileText = GetFileText(file.FullName)
-          where fileText.Contains(_searchTerm)
-          select file.FullName;
-
-      int totalFilesCoincidences = 0;
-      int fileCoincidences = 0;
-      foreach (string filename in queryMatchingFiles)
+      try
       {
-        fileCoincidences = GetCoincidences(filename);
-        resultDTO.CoincidencesByFile.Add(filename + " (" + fileCoincidences.ToString() + ")");
-        totalFilesCoincidences = totalFilesCoincidences + fileCoincidences;
+        // This method assumes that the application has discovery permissions  
+        // for all folders under the specified path.  
+        IEnumerable<System.IO.FileInfo> fileList = dir.GetFiles("*.txt", System.IO.SearchOption.AllDirectories);
+
+        // Search the contents of each file.  
+        // A regular expression created with the RegEx class  
+        // could be used instead of the Contains method.  
+        // queryMatchingFiles is an IEnumerable<string>.  
+        var queryMatchingFiles =
+            from file in fileList
+            where file.Extension == ".txt"
+            let fileText = GetFileText(file.FullName)
+            where fileText.Contains(_searchTerm)
+            select file.FullName;
+
+        int totalCoincidences = 0;
+        int fileCoincidences = 0;
+        int filesFound = 0;
+        foreach (string filename in queryMatchingFiles)
+        {
+          fileCoincidences = GetCoincidences(filename);
+          if (fileCoincidences > 0)
+          {
+            resultDTO.CoincidencesByFile.Add(filename + " (" + fileCoincidences.ToString() + ")");
+            totalCoincidences = totalCoincidences + fileCoincidences;
+            filesFound += 1;
+          }
+        }
+
+        resultDTO.TotalFilesFound = filesFound;
+        resultDTO.TotalCoincidencesFound = totalCoincidences;
       }
-
-      resultDTO.TotalFilesFound = queryMatchingFiles.ToList().Count();
-      resultDTO.TotalCoincidencesFound = totalFilesCoincidences;
-
+      catch (Exception ex)
+      { 
+      }
       return resultDTO;
     }
 
@@ -91,11 +102,18 @@ namespace FileSystemWordCounter.API.Business
     {
       string fileContents = String.Empty;
 
-      // If the file has been deleted since we took
-      // the snapshot, ignore it and return the empty string.  
-      if (System.IO.File.Exists(name))
+      try
       {
-        fileContents = System.IO.File.ReadAllText(name);
+        // If the file has been deleted since we took
+        // the snapshot, ignore it and return the empty string.  
+        if (System.IO.File.Exists(name))
+        {
+          fileContents = System.IO.File.ReadAllText(name);
+        }
+      }
+      catch (Exception ex)
+      {
+
       }
       return fileContents;
     }
